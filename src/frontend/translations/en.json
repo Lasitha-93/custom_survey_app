@@ -1,0 +1,156 @@
+{
+  "language": "English",
+  "survey": {
+    "title": "Image Quality Evaluation Survey",
+    "subtitle": "Help us evaluate the quality of generated images",
+    "instructions": "Please rate each image based on the following criteria:",
+    "mainInstruction": "TASK: Please read the image caption and rate the images below. You could read the Article or Article summary to get more context about the caption and the image",
+    "stage": "Stage {{number}} of {{total}}",
+    "sampleCount": "Image {{current}} of {{total}}",
+    "finalization": "Finalization",
+    "finalizationInstructions": "TASK: Review your top-rated images and select your overall best image for this article.",
+    "selectFinalistMessage": "Please select a finalist image",
+    "languageWarningMessage": "Original language of the article is English. We encourage you to complete the survey in English, if possible, for accurate understanding of the Article.",
+    "translatedArticleBanner": "This is an AI translated article",
+    "aiSummaryBanner": "This is an AI-generated summary",
+    "feedbackTitle": "Want to see your results?",
+    "feedbackQuestion": "Would you like to see how many pictures of the source guess you did is correct?",
+    "feedbackNo": "No, Skip",
+    "feedbackYes": "Yes, Show me",
+    "resultsTitle": "Your Source Guess Results",
+    "resultsScore": "You got {{correct}} out of {{total}} correct!",
+    "resultsContinue": "Continue to Next Article",
+    "pointsEarned": "You earned {{points}} point{{plural}} from this article!",
+    "badge": {
+      "newbie": "AI Newbie",
+      "spotter": "AI Spotter",
+      "expert": "AI Expert",
+      "oracle": "AI Oracle",
+      "legendary": "Legendary Detector"
+    }
+  },
+  "criteria": {
+    "relevance": {
+      "label": "Relevance",
+      "description": "How relevant is this image to the article topic? Does it appropriately represent the subject matter?"
+    },
+    "real_like": {
+      "label": "Real-likeness",
+      "description": "How realistic does this image appear? Does it look authentic and natural, without obvious artifacts?"
+    },
+    "accuracy": {
+      "label": "Accuracy",
+      "description": "How accurately does this image represent the article content? Are the details semantically correct?"
+    },
+    "source_guess": {
+      "label": "Source Guess",
+      "description": "Based on all aspects of the image, do you think it is real or AI-generated?"
+    }
+  },
+  "scale": {
+    "1": "Poor",
+    "2": "Fair",
+    "3": "Good",
+    "4": "Very Good",
+    "5": "Excellent"
+  },
+  "scaleDescriptions": {
+    "1": "Does not meet criteria",
+    "2": "Barely meets criteria",
+    "3": "Meets criteria adequately",
+    "4": "Meets criteria well",
+    "5": "Exceeds criteria"
+  },
+  "demographics": {
+    "title": "Tell us about yourself",
+    "subtitle": "This information helps us understand your perspective (completely anonymous)",
+    "age": "Age group:",
+    "ageOptions": [
+      "18-25",
+      "26-35",
+      "36-45",
+      "46-55",
+      "56+"
+    ],
+    "occupation": "What is your primary area of occupation?",
+    "occupationOptions": [
+      "Engineering/Technology",
+      "Education",
+      "Business/Finance",
+      "Creative/Arts",
+      "Healthcare",
+      "Other",
+      "Prefer not to say"
+    ],
+    "education": "Highest educational qualification:",
+    "educationOptions": [
+      "High School",
+      "Bachelor's Degree",
+      "Master's Degree",
+      "PhD/Doctorate",
+      "Other",
+      "Prefer not to say"
+    ],
+    "aiExperience": "Your experience with AI/Generative AI:",
+    "aiExperienceOptions": [
+      "None",
+      "Basic (aware of AI)",
+      "Intermediate (used AI tools)",
+      "Advanced (develop/research AI)"
+    ],
+    "aiStance": "Your current stance on AI development:",
+    "aiStanceOptions": [
+      "Impressed",
+      "Neutral",
+      "Skeptical"
+    ]
+  },
+  "buttons": {
+    "startSurvey": "Start Survey",
+    "next": "Next",
+    "nextTooltip": "Please evaluate all the cards completely!",
+    "previous": "Previous",
+    "submit": "Submit",
+    "article": "Show Full Article",
+    "summary": "Show Article Summary",
+    "rememberMe": "Remember Me",
+    "noThanks": "No Thanks",
+    "continueButton": "Continue Survey",
+    "close": "Close",
+    "real": "Real",
+    "aiGenerated": "AI Generated"
+  },
+  "consent": {
+    "title": "Cookie Consent",
+    "message": "Help us improve our research - we'd like to remember you if you return to continue the survey. Your session will be stored in a cookie.",
+    "rememberButton": "Remember Me",
+    "skipButton": "No Thanks"
+  },
+  "notifications": {
+    "sessionCreated": "Session created successfully",
+    "demographicsError": "Error saving your information. Please try again.",
+    "demographicsSaved": "Thank you! Your information has been saved.",
+    "ratingError": "Error saving rating. Please try again.",
+    "ratingSaved": "Rating saved",
+    "sessionResumed": "Welcome back! Resuming your survey...",
+    "completeAllRatings": "Please rate all criteria before continuing",
+    "surveyComplete": "Survey complete! Thank you for your participation."
+  },
+  "errors": {
+    "loadingFailed": "Failed to load survey. Please refresh the page.",
+    "sessionError": "Session error. Please start over.",
+    "networkError": "Network error. Please check your connection."
+  },
+  "leave": {
+    "confirmMessage": "Are you sure you want to leave the survey?",
+    "thankYouTitle": "Thank You!",
+    "thankYouMessage": "Thank you for taking the time to help with our research. Your feedback has been recorded and is valuable to us!",
+    "thankYouDetails": "Your responses have been successfully saved and will contribute to improving our research.",
+    "footerText": "You can now close this browser tab."
+  },
+  "status": {
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "ready": "Ready"
+  }
+}

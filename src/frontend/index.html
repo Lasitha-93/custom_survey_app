@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Evaluation Survey</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Consent Banner Modal -->
+    <div id="consentModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="consentTitle">Cookie Consent</h2>
+            </div>
+            <div class="modal-body">
+                <p id="consentMessage">Help improve our research...</p>
+            </div>
+            <div class="modal-footer">
+                <button id="consentRemember" class="button button-primary">Remember Me</button>
+                <button id="consentSkip" class="button button-secondary">No Thanks</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demographic Form Modal -->
+    <div id="demographicModal" class="modal hidden">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="demographicTitle">Tell us about yourself</h2>
+                <p id="demographicSubtitle" style="font-size: 14px; color: #666; margin-top: 5px;"></p>
+            </div>
+            <div class="modal-body">
+                <form id="demographicForm">
+                    <!-- Age -->
+                    <div class="form-group">
+                        <label for="ageSelect" id="ageLabel">Age group:</label>
+                        <select id="ageSelect" required>
+                            <option value="">-- Select --</option>
+                            <option value="18-25">18-25</option>
+                            <option value="26-35">26-35</option>
+                            <option value="36-45">36-45</option>
+                            <option value="46-55">46-55</option>
+                            <option value="56+">56+</option>
+                        </select>
+                    </div>
+
+                    <!-- Occupation -->
+                    <div class="form-group">
+                        <label for="occupationSelect" id="occupationLabel">Occupation:</label>
+                        <select id="occupationSelect" required>
+                            <option value="">-- Select --</option>
+                            <option value="Engineering/Technology">Engineering/Technology</option>
+                            <option value="Education">Education</option>
+                            <option value="Business/Finance">Business/Finance</option>
+                            <option value="Creative/Arts">Creative/Arts</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Other">Other</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="form-group">
+                        <label for="educationSelect" id="educationLabel">Education:</label>
+                        <select id="educationSelect" required>
+                            <option value="">-- Select --</option>
+                            <option value="High School">High School</option>
+                            <option value="Bachelor's Degree">Bachelor's Degree</option>
+                            <option value="Master's Degree">Master's Degree</option>
+                            <option value="PhD/Doctorate">PhD/Doctorate</option>
+                            <option value="Other">Other</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <!-- AI Experience -->
+                    <div class="form-group">
+                        <label id="aiExperienceLabel">Experience with AI/Generative AI:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="aiExperience" value="None" required>
+                                <span id="aiExp-none">None</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="aiExperience" value="Basic">
+                                <span id="aiExp-basic">Basic (aware of AI)</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="aiExperience" value="Intermediate">
+                                <span id="aiExp-intermediate">Intermediate (used AI tools)</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="aiExperience" value="Advanced">
+                                <span id="aiExp-advanced">Advanced (develop/research AI)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- AI Stance -->
+                    <div class="form-group">
+                        <label id="aiStanceLabel">Your stance on AI development:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="aiStance" value="Impressed" required>
+                                <span id="aiStance-impressed">Impressed</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="aiStance" value="Neutral">
+                                <span id="aiStance-neutral">Neutral</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="aiStance" value="Skeptical">
+                                <span id="aiStance-skeptical">Skeptical</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="demographicSubmit" class="button button-primary">Start Survey</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Source Guess Feedback Modal -->
+    <div id="feedbackModal" class="modal hidden">
+        <div class="modal-content modal-feedback">
+            <div class="modal-header">
+                <h2 id="feedbackTitle">Want to see your results?</h2>
+            </div>
+            <div class="modal-body">
+                <p id="feedbackQuestion">Would you like to see how many pictures of the source guess you did is correct?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="feedbackNo" class="button button-secondary">No, Skip</button>
+                <button id="feedbackYes" class="button button-primary">Yes, Show me</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Source Guess Results Modal -->
+    <div id="resultsModal" class="modal hidden">
+        <div class="modal-content modal-results">
+            <div class="modal-header">
+                <h2 id="resultsTitle">Your Source Guess Results</h2>
+                <div id="resultsScore" style="font-size: 18px; margin-top: 10px; font-weight: bold; color: #003366;"></div>
+            </div>
+            <div class="modal-body" id="resultsGridContainer">
+                <!-- Feedback cards grid will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button id="resultsContinue" class="button button-primary">Continue to Next Article</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header with Progress -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-top">
+                    <h1 id="surveyTitle">Image Quality Evaluation Survey</h1>
+                    <!-- Badge Display -->
+                    <div id="userBadge"></div>
+                    <!-- Language Switcher & Exit Controls -->
+                    <div class="language-switcher">
+                        <label for="languageSelect" style="margin-right: 8px; font-size: 18px;">🌐</label>
+                        <select id="languageSelect" onchange="app.changeLanguage(this.value)">
+                            <option value="en">English</option>
+                            <option value="de">Deutsch</option>
+                            <option value="fr">Français</option>
+                            <option value="si">සිංහල</option>
+                        </select>
+                        <button class="leave-btn" id="leaveBtn" title="Exit survey">Leave Survey</button>
+                    </div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-text">
+                        <span id="stageLabel">Stage</span> <span id="stageProgress">1</span>/6
+                        <span style="margin-left: 20px;"><span id="sampleLabel">Sample</span> <span id="currentSample">1</span> / <span id="totalSamples">100</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Language Warning Banner -->
+        <div id="languageWarningBanner" class="language-warning-banner" style="display: none;">
+            <span id="languageWarningText">Original language of the article is English. We encourage you to complete the survey in English, if possible, for accurate understanding of the Article.</span>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <!-- Side Panel -->
+            <aside class="side-panel">
+                <div class="caption-section">
+                    <h2 id="captionTypeLabel">Original Caption</h2>
+                    <div class="caption-display" id="captionDisplay"></div>
+                </div>
+
+                <div class="article-controls">
+                    <button class="toggle-btn" id="articleBtn" data-toggle="article">
+                        📄 Show Full Article
+                    </button>
+                    <button class="toggle-btn" id="summaryBtn" data-toggle="summary">
+                        📋 Show Article Summary
+                    </button>
+                </div>
+
+                <!-- Content Warning Banner -->
+                <div id="contentWarningBanner" class="content-warning-banner" style="display: none;">
+                    <span id="contentWarningText"></span>
+                </div>
+
+                <div class="article-content-wrapper">
+                    <div class="article-content" id="articleContent"></div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Main Instruction Banner (for stages 1-5) -->
+                <div id="mainInstructionBanner" class="main-instruction-banner" style="display: none;"></div>
+                
+                <!-- Finalization Instruction Banner (for stage 6) -->
+                <div id="finalizationInstructionBanner" class="main-instruction-banner" style="display: none;"></div>
+                
+                <div class="cards-container" id="cardsContainer"></div>
+                
+                <div class="action-buttons">
+                    <button class="next-btn" id="nextBtn" disabled>
+                        Next Caption →
+                    </button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Rating Tooltip -->
+    <div class="star-tooltip" id="tooltip"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

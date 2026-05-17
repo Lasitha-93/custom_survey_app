@@ -1,0 +1,144 @@
+{
+  "language": "Français",
+  "survey": {
+    "title": "Sondage d'évaluation de la qualité des images",
+    "subtitle": "Aidez-nous à évaluer la qualité des images générées",
+    "instructions": "Veuillez évaluer chaque image selon les critères suivants :",
+    "mainInstruction": "TÂCHE: Veuillez lire la légende de l'image et évaluer les images ci-dessous. Vous pouvez lire l'article ou le résumé de l'article pour obtenir plus de contexte sur la légende et l'image",
+    "stage": "Étape {{number}} sur {{total}}",
+    "sampleCount": "Image {{current}} sur {{total}}",
+    "finalization": "Finalisation",
+    "finalizationInstructions": "TÂCHE: Examinez vos images les mieux notées et sélectionnez votre meilleure image globale pour cet article.",
+    "selectFinalistMessage": "Veuillez sélectionner une image finaliste",
+    "languageWarningMessage": "La langue originale de l'article est l'anglais. Nous vous encourageons à remplir l'enquête en anglais si possible pour une meilleure compréhension de l'article.",
+    "translatedArticleBanner": "Ceci est un article traduit par l'IA",
+    "aiSummaryBanner": "Ceci est un résumé généré par l'IA",
+    "feedbackTitle": "Voulez-vous voir vos résultats?",
+    "feedbackQuestion": "Aimeriez-vous voir combien de suppositions sur la source d'une image vous avez correctement estimées?",
+    "feedbackNo": "Non, ignorer",
+    "feedbackYes": "Oui, montrez-moi",
+    "resultsTitle": "Vos résultats de devinette source",
+    "resultsScore": "Vous avez eu {{correct}} sur {{total}} correctes!",
+    "resultsContinue": "Continuer vers le prochain article"
+  },
+  "criteria": {
+    "relevance": {
+      "label": "Pertinence",
+      "description": "Quelle est la pertinence de cette image par rapport au sujet de l'article ? Représente-t-elle le sujet de manière appropriée ?"
+    },
+    "real_like": {
+      "label": "Réalisme",
+      "description": "Quelle est l'apparence réaliste de cette image ? Semble-t-elle authentique et naturelle, sans artefacts évidents ?"
+    },
+    "accuracy": {
+      "label": "Précision",
+      "description": "Dans quelle mesure cette image représente-t-elle avec précision le contenu de l'article ? Les détails sont-ils sémantiquement corrects ?"    },
+    "source_guess": {
+      "label": "Hypothèse sur la source",
+      "description": "Sur la base de tous les aspects de l'image, pensez-vous qu'elle est réelle ou générée par l'IA ?"    }
+  },
+  "scale": {
+    "1": "Mauvais",
+    "2": "Faible",
+    "3": "Bon",
+    "4": "Très Bon",
+    "5": "Excellent"
+  },
+  "scaleDescriptions": {
+    "1": "Ne répond pas aux critères",
+    "2": "Répond à peine aux critères",
+    "3": "Répond aux critères de manière adéquate",
+    "4": "Répond bien aux critères",
+    "5": "Dépasse les critères"
+  },
+  "demographics": {
+    "title": "Parlez-nous de vous",
+    "subtitle": "Ces informations nous aident à comprendre votre perspective (complètement anonyme)",
+    "age": "Groupe d'âge :",
+    "ageOptions": [
+      "18-25",
+      "26-35",
+      "36-45",
+      "46-55",
+      "56+"
+    ],
+    "occupation": "Quel est votre principal domaine d'occupation ?",
+    "occupationOptions": [
+      "Ingénierie/Technologie",
+      "Éducation",
+      "Affaires/Finance",
+      "Créatif/Arts",
+      "Soins de santé",
+      "Autre",
+      "Préférer ne pas dire"
+    ],
+    "education": "Diplôme d'études le plus élevé :",
+    "educationOptions": [
+      "Baccalauréat",
+      "Licence",
+      "Master",
+      "Doctorat/Thèse",
+      "Autre",
+      "Préférer ne pas dire"
+    ],
+    "aiExperience": "Votre expérience avec l'IA/IA générative :",
+    "aiExperienceOptions": [
+      "Aucune",
+      "Basique (conscient de l'IA)",
+      "Intermédiaire (utilisé des outils IA)",
+      "Avancé (développe/recherche en IA)"
+    ],
+    "aiStance": "Votre position actuelle sur le développement de l'IA :",
+    "aiStanceOptions": [
+      "Impressionné",
+      "Neutre",
+      "Sceptique"
+    ]
+  },
+  "buttons": {
+    "startSurvey": "Commencer le Sondage",
+    "next": "Suivant",
+    "nextTooltip": "Veuillez évaluer toutes les cartes complètement!",
+    "previous": "Précédent",
+    "submit": "Soumettre",
+    "article": "Afficher l'article complet",
+    "summary": "Afficher le résumé de l'article",
+    "rememberMe": "Se Souvenir de Moi",
+    "noThanks": "Non Merci",
+    "continueButton": "Continuer le Sondage",
+    "close": "Fermer",
+    "real": "Réel",
+    "aiGenerated": "Généré par l'IA"
+  },
+  "consent": {
+    "title": "Consentement aux Cookies",
+    "message": "Aidez-nous à améliorer notre recherche - nous aimerions nous souvenir de vous si vous revenez poursuivre le sondage. Votre session sera stockée dans un cookie.",
+    "rememberButton": "Se Souvenir de Moi",
+    "skipButton": "Non Merci"
+  },
+  "notifications": {
+    "sessionCreated": "Session créée avec succès",
+    "demographicsError": "Erreur lors de l'enregistrement de vos informations. Veuillez réessayer.",
+    "demographicsSaved": "Merci ! Vos informations ont été enregistrées.",
+    "ratingError": "Erreur lors de l'enregistrement de l'évaluation. Veuillez réessayer.",
+    "ratingSaved": "Évaluation enregistrée",
+    "sessionResumed": "Bienvenue ! Reprise de votre sondage...",
+    "completeAllRatings": "Veuillez évaluer tous les critères avant de continuer",
+    "surveyComplete": "Sondage terminé ! Merci de votre participation."
+  },
+  "errors": {
+    "loadingFailed": "Échec du chargement du sondage. Veuillez actualiser la page.",
+    "sessionError": "Erreur de session. Veuillez recommencer.",
+    "networkError": "Erreur réseau. Veuillez vérifier votre connexion."
+  },  "leave": {
+    "confirmMessage": "Êtes-vous sûr de vouloir quitter l'enquête?",
+    "thankYouTitle": "Merci!",
+    "thankYouMessage": "Merci d'avoir pris le temps d'aider à notre recherche. Vos commentaires ont été enregistrés et sont précieux pour nous!",
+    "thankYouDetails": "Vos réponses ont été enregistrées avec succès et contribueront à l'amélioration de nos recherches.",
+    "footerText": "Vous pouvez maintenant fermer cet onglet du navigateur."
+  },  "status": {
+    "loading": "Chargement en cours...",
+    "saving": "Enregistrement en cours...",
+    "ready": "Prêt"
+  }
+}

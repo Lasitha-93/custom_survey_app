@@ -1,0 +1,148 @@
+{
+  "language": "Deutsch",
+  "survey": {
+    "title": "Umfrage zur Bildqualitätsevaluierung",
+    "subtitle": "Helfen Sie uns, die Qualität der generierten Bilder zu bewerten",
+    "instructions": "Bitte bewerten Sie jedes Bild anhand der folgenden Kriterien:",
+    "mainInstruction": "AUFGABE: Bitte lesen Sie die Bildunterschrift und bewerten Sie die Bilder unten. Sie können den Artikel oder die Artikelzusammenfassung lesen, um mehr Kontext über die Bildunterschrift und das Bild zu erhalten",
+    "stage": "Stufe {{number}} von {{total}}",
+    "sampleCount": "Bild {{current}} von {{total}}",
+    "finalization": "Finalisierung",
+    "finalizationInstructions": "AUFGABE: Überprüfen Sie Ihre top-bewerteten Bilder und wählen Sie Ihr bestes Gesamtbild für diesen Artikel.",
+    "selectFinalistMessage": "Bitte wählen Sie ein Finalistenbild aus",
+    "languageWarningMessage": "Die Originalsprache des Artikels ist Englisch. Wir empfehlen Ihnen, die Umfrage wenn möglich auf Englisch auszufüllen, um das Artikel besser zu verstehen.",
+    "translatedArticleBanner": "Dies ist ein KI-übersetzter Artikel",
+    "aiSummaryBanner": "Dies ist eine KI-generierte Zusammenfassung",
+    "feedbackTitle": "Möchten Sie Ihre Ergebnisse sehen?",
+    "feedbackQuestion": "Möchten Sie sehen, wie viele Bildvermutungen Sie korrekt gemacht haben?",
+    "feedbackNo": "Nein, überspringen",
+    "feedbackYes": "Ja, zeigen Sie mir",
+    "resultsTitle": "Ihre Ergebnisse zur Bildquellenbestimmung",
+    "resultsScore": "Sie haben {{correct}} von {{total}} korrekt erraten!",
+    "resultsContinue": "Zum nächsten Artikel"
+  },
+  "criteria": {
+    "relevance": {
+      "label": "Relevanz",
+      "description": "Wie relevant ist dieses Bild für das Artikelthema? Stellt es das Thema angemessen dar?"
+    },
+    "real_like": {
+      "label": "Realitätsnähe",
+      "description": "Wie realistisch wirkt dieses Bild? Sieht es authentisch und natürlich aus, ohne offensichtliche Artefakte?"
+    },
+    "accuracy": {
+      "label": "Genauigkeit",
+      "description": "Wie genau stellt dieses Bild den Artikelinhalt dar? Sind die Details semantisch korrekt?"
+    },
+    "source_guess": {
+      "label": "Quellenanalyse",
+      "description": "Basierend auf allen Aspekten des Bildes: Handelt es sich um ein echtes oder ein KI-generiertes Bild?"
+    }
+  },
+  "scale": {
+    "1": "Schlecht",
+    "2": "Mangelhaft",
+    "3": "Gut",
+    "4": "Sehr Gut",
+    "5": "Ausgezeichnet"
+  },
+  "scaleDescriptions": {
+    "1": "Erfüllt das Kriterium nicht",
+    "2": "Erfüllt das Kriterium kaum",
+    "3": "Erfüllt das Kriterium angemessen",
+    "4": "Erfüllt das Kriterium gut",
+    "5": "Übersteigt das Kriterium"
+  },
+  "demographics": {
+    "title": "Erzählen Sie uns von sich",
+    "subtitle": "Diese Informationen helfen uns, Ihre Perspektive zu verstehen (vollständig anonym)",
+    "age": "Altersgruppe:",
+    "ageOptions": [
+      "18-25",
+      "26-35",
+      "36-45",
+      "46-55",
+      "56+"
+    ],
+    "occupation": "Worin besteht Ihre primäre berufliche Tätigkeit?",
+    "occupationOptions": [
+      "Ingenieurwesen/Technologie",
+      "Bildung",
+      "Geschäft/Finanzen",
+      "Kreativ/Künste",
+      "Gesundheitswesen",
+      "Sonstiges",
+      "Keine Angabe"
+    ],
+    "education": "Höchster Bildungsabschluss:",
+    "educationOptions": [
+      "Hochschulreife",
+      "Bachelor-Abschluss",
+      "Master-Abschluss",
+      "Promotion/Doktorat",
+      "Sonstiges",
+      "Keine Angabe"
+    ],
+    "aiExperience": "Ihre Erfahrung mit KI/Generativer KI:",
+    "aiExperienceOptions": [
+      "Keine",
+      "Basis (bewusst von KI)",
+      "Mittel (KI-Tools verwendet)",
+      "Fortgeschritten (entwickle/forsche an KI)"
+    ],
+    "aiStance": "Ihre aktuelle Haltung zur KI-Entwicklung:",
+    "aiStanceOptions": [
+      "Begeistert",
+      "Neutral",
+      "Skeptisch"
+    ]
+  },
+  "buttons": {
+    "startSurvey": "Umfrage Starten",
+    "next": "Weiter",
+    "nextTooltip": "Bitte bewerten Sie alle Karten vollständig!",
+    "previous": "Zurück",
+    "submit": "Absenden",
+    "article": "Vollständigen Artikel anzeigen",
+    "summary": "Artikelzusammenfassung anzeigen",
+    "rememberMe": "Merken",
+    "noThanks": "Nein Danke",
+    "continueButton": "Umfrage fortsetzen",
+    "close": "Schließen",
+    "real": "Echt",
+    "aiGenerated": "KI-generiert"
+  },
+  "consent": {
+    "title": "Cookie-Zustimmung",
+    "message": "Helfen Sie uns, unsere Forschung zu verbessern - wir würden gerne zu Ihrer Rückkehr Ihre Sitzung erinnern. Ihre Sitzung wird in einem Cookie gespeichert.",
+    "rememberButton": "Merken",
+    "skipButton": "Nein Danke"
+  },
+  "notifications": {
+    "sessionCreated": "Sitzung erfolgreich erstellt",
+    "demographicsError": "Fehler beim Speichern Ihrer Daten. Bitte versuchen Sie es erneut.",
+    "demographicsSaved": "Danke! Ihre Daten wurden gespeichert.",
+    "ratingError": "Fehler beim Speichern der Bewertung. Bitte versuchen Sie es erneut.",
+    "ratingSaved": "Bewertung gespeichert",
+    "sessionResumed": "Willkommen zurück! Sitzung wird fortgesetzt...",
+    "completeAllRatings": "Bitte bewerten Sie alle Kriterien, bevor Sie fortfahren",
+    "surveyComplete": "Umfrage abgeschlossen! Danke für Ihre Teilnahme."
+  },
+  "errors": {
+    "loadingFailed": "Fehler beim Laden der Umfrage. Bitte aktualisieren Sie die Seite.",
+    "sessionError": "Sitzungsfehler. Bitte beginnen Sie von vorne.",
+    "networkError": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung."
+  },
+  "leave": {
+    "confirmMessage": "Sind Sie sicher, dass Sie die Umfrage verlassen möchten?",
+    "thankYouTitle": "Vielen Dank!",
+    "thankYouMessage": "Vielen Dank, dass Sie sich Zeit genommen haben, um unsere Forschung zu unterstützen. Ihr Feedback wurde aufgezeichnet und ist wertvoll für uns!",
+    "thankYouDetails": "Ihre Antworten wurden erfolgreich gespeichert und tragen zur Verbesserung unserer Forschung bei.",
+    "footerText": "Sie können diesen Browser-Tab jetzt schließen."
+  },
+  "status": {
+    "loading": "Wird geladen...",
+    "saving": "Wird gespeichert...",
+    "ready": "Bereit"
+  }
+}

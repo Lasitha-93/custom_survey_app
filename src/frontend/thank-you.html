@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .thank-you-container {
+            background: white;
+            border-radius: 12px;
+            padding: 60px 40px;
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .thank-you-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .message-box {
+            background-color: #f0f9ff;
+            border-left: 4px solid var(--success-color);
+            padding: 20px;
+            border-radius: 6px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .message-box p {
+            margin: 0;
+            font-size: 15px;
+            color: var(--primary-color);
+        }
+
+        .footer-text {
+            color: #999;
+            font-size: 13px;
+            margin-top: 30px;
+        }
+
+        .close-hint {
+            color: #bbb;
+            font-size: 12px;
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="thank-you-container">
+        <div class="thank-you-icon">🎉</div>
+        <h1 id="thankYouTitle">Thank You!</h1>
+        <p id="thankYouMessage">Thank you for taking the time to help with our research. Your feedback has been recorded and is valuable to us!</p>
+        <div class="message-box">
+            <p id="thankYouDetails">Your responses have been successfully saved and will contribute to improving our research.</p>
+        </div>
+        <p class="footer-text" id="footerText">You can now close this browser tab.</p>
+        <p class="close-hint" id="closeHint">(Or press Ctrl+W to close the tab)</p>
+    </div>
+
+    <script>
+        // I18n utilities (same as in app.js)
+        const i18n = {
+            currentLanguage: 'en',
+            translations: {},
+            
+            async load(lang) {
+                try {
+                    const response = await fetch(`./translations/${lang}.json`);
+                    if (!response.ok) throw new Error(`Failed to load ${lang}.json`);
+                    this.translations[lang] = await response.json();
+                    this.currentLanguage = lang;
+                    return true;
+                } catch (e) {
+                    console.error('[i18n] Failed to load language:', e);
+                    if (lang !== 'en') {
+                        console.log('[i18n] Falling back to English');
+                        return this.load('en');
+                    }
+                    return false;
+                }
+            },
+            
+            t(key) {
+                const keys = key.split('.');
+                let value = this.translations[this.currentLanguage] || {};
+                for (const k of keys) {
+                    value = value[k];
+                    if (!value) return key;
+                }
+                return value;
+            }
+        };
+
+        // Cookie utilities (same as in app.js)
+        const cookieUtils = {
+            get(name) {
+                const nameEQ = name + '=';
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    cookie = cookie.trim();
+                    if (cookie.indexOf(nameEQ) === 0) {
+                        return decodeURIComponent(cookie.substring(nameEQ.length));
+                    }
+                }
+                return null;
+            }
+        };
+
+        // Initialize thank you page
+        async function initializeThankYouPage() {
+            // Load saved language preference
+            const savedLanguage = cookieUtils.get('survey_lang') || 'en';
+            await i18n.load(savedLanguage);
+
+            // Update text from i18n
+            document.getElementById('thankYouTitle').textContent = i18n.t('leave.thankYouTitle');
+            document.getElementById('thankYouMessage').textContent = i18n.t('leave.thankYouMessage');
+            
+            // Set details message based on language
+            const detailsKey = i18n.t('leave.thankYouDetails') || 'Your responses have been successfully saved and will contribute to improving our research.';
+            document.getElementById('thankYouDetails').textContent = detailsKey;
+            
+            // Update footer text
+            const footerKey = i18n.t('leave.footerText') || 'You can now close this browser tab.';
+            document.getElementById('footerText').textContent = footerKey;
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeThankYouPage);
+    </script>
+</body>
+</html>
