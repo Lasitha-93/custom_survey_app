@@ -789,6 +789,7 @@ class SurveyApp {
             // Step 5: Setup event listeners
             console.log('[initializeApp] Step 5: Setting up event listeners...');
             this.setupEventListeners();
+            this.setupStickyCaptionBar();
             console.log('[initializeApp] Step 5 complete');
             
             // Step 6: Display sample (will fetch from database)
@@ -808,6 +809,35 @@ class SurveyApp {
             console.error('[initializeApp] Full error:', error);
             this.showError(i18n.t('errors.loadingFailed'));
         }
+    }
+
+    setupStickyCaptionBar() {
+        if (window.innerWidth > 768) return;
+
+        const captionSection = document.querySelector('.caption-section');
+        const stickyBar = document.getElementById('stickyCaptionBar');
+        const toggleBtn = document.getElementById('stickyCaptionToggle');
+
+        if (!captionSection || !stickyBar || !toggleBtn) return;
+
+        // Tap header to expand/collapse caption text
+        toggleBtn.addEventListener('click', () => {
+            stickyBar.classList.toggle('expanded');
+        });
+
+        // Show when caption section scrolls out of view, hide when back in view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    stickyBar.classList.remove('hidden');
+                } else {
+                    stickyBar.classList.add('hidden');
+                    stickyBar.classList.remove('expanded');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        observer.observe(captionSection);
     }
 
     async loadMetadata() {
@@ -1054,6 +1084,12 @@ class SurveyApp {
         document.getElementById('captionTypeLabel').textContent = 
             `Image Caption ${this.currentStage}`;
         document.getElementById('captionDisplay').textContent = captionText;
+
+        // Sync sticky caption bar (mobile)
+        const stickyCaptionText = document.getElementById('stickyCaptionText');
+        const stickyCaptionTypeLabel = document.getElementById('stickyCaptionTypeLabel');
+        if (stickyCaptionText) stickyCaptionText.textContent = captionText;
+        if (stickyCaptionTypeLabel) stickyCaptionTypeLabel.textContent = `Image Caption ${this.currentStage}`;
         
         // Store for toggle access
         this.currentArticle = articleText;

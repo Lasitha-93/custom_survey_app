@@ -1246,6 +1246,74 @@ body {
 }
 
 /* Responsive for mobile modals */
+/* Sticky Caption Bar (mobile only) */
+.sticky-caption-bar {
+    display: none;
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    background: white;
+    border-bottom: 2px solid var(--secondary-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.sticky-caption-bar.hidden {
+    display: none !important;
+}
+
+.sticky-caption-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 15px;
+    cursor: pointer;
+    background: #eaf2fb;
+    user-select: none;
+}
+
+.sticky-caption-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sticky-caption-chevron {
+    font-size: 14px;
+    color: var(--secondary-color);
+    transition: transform 0.2s ease;
+    line-height: 1;
+}
+
+.sticky-caption-bar.expanded .sticky-caption-chevron {
+    transform: rotate(180deg);
+}
+
+.sticky-caption-text {
+    display: none;
+    padding: 10px 15px 12px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-color);
+    border-left: 3px solid var(--secondary-color);
+    margin: 0 12px 8px;
+    border-radius: 0 4px 4px 0;
+    max-height: 140px;
+    overflow-y: auto;
+    background: var(--light-bg);
+}
+
+.sticky-caption-bar.expanded .sticky-caption-text {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .sticky-caption-bar:not(.hidden) {
+        display: block;
+    }
+}
+
 @media (max-width: 600px) {
     .side-panel {
         max-height: 320px;
