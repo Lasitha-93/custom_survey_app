@@ -1,15 +1,16 @@
+import os
+from dotenv import load_dotenv
+
+# Load environment variables BEFORE importing config (which reads env vars at class definition time)
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
 from flask import Flask
 from flask_cors import CORS
 from config import config
 from models import db
-import os
-from dotenv import load_dotenv
 import json
 from pathlib import Path
-
-# Load environment variables from .env file
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-load_dotenv(dotenv_path)
 
 def initialize_article_metadata():
     """
