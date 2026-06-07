@@ -919,6 +919,92 @@ body {
         margin-top: 15px;
         padding: 15px;
     }
+
+    /* Header responsiveness */
+    .header {
+        padding: 10px 15px;
+    }
+
+    .header-top {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .header-top h1 {
+        font-size: 16px;
+        width: 100%;
+        flex: none;
+        order: -1;
+    }
+
+    #userBadge {
+        min-width: unset;
+        flex: 1;
+        padding: 8px 10px;
+    }
+
+    .badge-icon {
+        font-size: 24px;
+    }
+
+    .badge-name {
+        font-size: 12px;
+    }
+
+    .badge-points {
+        font-size: 11px;
+    }
+
+    .badge-progress-bar {
+        height: 16px;
+    }
+
+    .language-switcher {
+        gap: 6px;
+        flex-shrink: 0;
+    }
+
+    .language-switcher .leave-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .language-switcher select {
+        padding: 6px 8px;
+        font-size: 13px;
+    }
+
+    .progress-bar {
+        max-width: none;
+    }
+
+    .progress-text {
+        font-size: 12px;
+        min-width: 70px;
+    }
+
+    /* Stars — bigger touch targets on mobile */
+    .star {
+        width: 32px;
+        height: 32px;
+        font-size: 24px;
+    }
+
+    .star-rating {
+        min-width: unset;
+        gap: 2px;
+    }
+
+    .criterion-label {
+        font-size: 11px;
+        min-width: 60px;
+    }
+
+    /* Container height fix for mobile browsers (address bar overlap) */
+    .container {
+        height: auto;
+        min-height: 100vh;
+    }
 }
 
 /* Language Switcher */
@@ -1225,6 +1311,39 @@ body {
 
     .feedback-card-label {
         font-size: 8px;
+    }
+
+    /* Header further condensed on small phones */
+    .header-top h1 {
+        font-size: 14px;
+    }
+
+    .badge-progress-bar {
+        display: none;
+    }
+
+    #userBadge {
+        padding: 6px 8px;
+    }
+
+    .badge-icon {
+        font-size: 20px;
+    }
+
+    .next-btn,
+    .leave-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+
+    /* Larger tap targets for binary radio buttons */
+    .binary-radio {
+        width: 22px;
+        height: 22px;
+    }
+
+    .criterion-rating {
+        min-height: 44px;
     }
 }
 
