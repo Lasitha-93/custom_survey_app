@@ -6,6 +6,7 @@
     "instructions": "Veuillez évaluer chaque image selon les critères suivants :",
     "mainInstruction": "TÂCHE: Veuillez lire la légende de l'image et évaluer les images ci-dessous. Vous pouvez lire l'article ou le résumé de l'article pour obtenir plus de contexte sur la légende et l'image",
     "stage": "Étape {{number}} sur {{total}}",
+    "imageCaption": "Légende de l'image",
     "sampleCount": "Image {{current}} sur {{total}}",
     "finalization": "Finalisation",
     "finalizationInstructions": "TÂCHE: Examinez vos images les mieux notées et sélectionnez votre meilleure image globale pour cet article.",

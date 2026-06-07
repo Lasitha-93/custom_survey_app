@@ -6,6 +6,7 @@
     "instructions": "Please rate each image based on the following criteria:",
     "mainInstruction": "TASK: Please read the image caption and rate the images below. You could read the Article or Article summary to get more context about the caption and the image",
     "stage": "Stage {{number}} of {{total}}",
+    "imageCaption": "Image Caption",
     "sampleCount": "Image {{current}} of {{total}}",
     "finalization": "Finalization",
     "finalizationInstructions": "TASK: Review your top-rated images and select your overall best image for this article.",

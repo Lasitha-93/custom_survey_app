@@ -825,11 +825,12 @@ class SurveyApp {
             stickyBar.classList.toggle('expanded');
         });
 
-        // Show when caption section scrolls out of view, hide when back in view
+        // Show already expanded when caption goes off screen, collapse when back in view
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (!entry.isIntersecting) {
                     stickyBar.classList.remove('hidden');
+                    stickyBar.classList.add('expanded');
                 } else {
                     stickyBar.classList.add('hidden');
                     stickyBar.classList.remove('expanded');
@@ -1082,14 +1083,14 @@ class SurveyApp {
 
         // Update UI
         document.getElementById('captionTypeLabel').textContent = 
-            `Image Caption ${this.currentStage}`;
+            `${i18n.t('survey.imageCaption')} ${this.currentStage}`;
         document.getElementById('captionDisplay').textContent = captionText;
 
         // Sync sticky caption bar (mobile)
         const stickyCaptionText = document.getElementById('stickyCaptionText');
         const stickyCaptionTypeLabel = document.getElementById('stickyCaptionTypeLabel');
         if (stickyCaptionText) stickyCaptionText.textContent = captionText;
-        if (stickyCaptionTypeLabel) stickyCaptionTypeLabel.textContent = `Image Caption ${this.currentStage}`;
+        if (stickyCaptionTypeLabel) stickyCaptionTypeLabel.textContent = `${i18n.t('survey.imageCaption')} ${this.currentStage}`;
         
         // Store for toggle access
         this.currentArticle = articleText;

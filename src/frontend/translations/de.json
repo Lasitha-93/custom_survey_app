@@ -6,6 +6,7 @@
     "instructions": "Bitte bewerten Sie jedes Bild anhand der folgenden Kriterien:",
     "mainInstruction": "AUFGABE: Bitte lesen Sie die Bildunterschrift und bewerten Sie die Bilder unten. Sie können den Artikel oder die Artikelzusammenfassung lesen, um mehr Kontext über die Bildunterschrift und das Bild zu erhalten",
     "stage": "Stufe {{number}} von {{total}}",
+    "imageCaption": "Bildunterschrift",
     "sampleCount": "Bild {{current}} von {{total}}",
     "finalization": "Finalisierung",
     "finalizationInstructions": "AUFGABE: Überprüfen Sie Ihre top-bewerteten Bilder und wählen Sie Ihr bestes Gesamtbild für diesen Artikel.",
