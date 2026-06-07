@@ -80,7 +80,9 @@ class SurveyApp {
         this.currentBadgeTier = -1;  // Track current badge tier for detecting level-ups
         this.metadataPath = '/evaluation_sample_100_meta_data.json';
         this.sampleBasePath = './sample_100';  // Relative path to sample data (works with HTTP server from frontend/)
-        this.apiBaseUrl = 'http://localhost:5000/api/v1';  // Backend API URL
+        this.apiBaseUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:5000/api/v1'   // Local development
+            : '/api/v1';                        // Production (proxied by Nginx)
         this.hasDemographics = false;  // Track if demographics collected
         
         // Evaluation criteria for each card
