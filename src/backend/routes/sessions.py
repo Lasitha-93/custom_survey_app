@@ -154,6 +154,10 @@ def get_least_rated_article(session_id):
         exclude_samples_str = request.args.get('exclude_samples', '')
         exclude_samples = [int(s) for s in exclude_samples_str.split(',') if s.strip().isdigit()] if exclude_samples_str else []
         limit = request.args.get('limit', 1, type=int)
+
+        # Get optional filter_ids (restrict selection to these IDs only, e.g. list_extra)
+        filter_ids_str = request.args.get('filter_ids', '')
+        filter_ids = [int(s) for s in filter_ids_str.split(',') if s.strip().isdigit()] if filter_ids_str else []
         
         # PHASE 0: Resume - Find incomplete articles for this session (page reload recovery)
         # ===================================================================================
@@ -187,6 +191,10 @@ def get_least_rated_article(session_id):
             
             # Find incomplete samples (have ratings but no finalist selection)
             incomplete_samples = [s for s in samples_with_ratings if s not in completed_samples]
+
+            # Apply filter_ids if provided (restrict to list_extra only)
+            if filter_ids:
+                incomplete_samples = [s for s in incomplete_samples if s in filter_ids]
             
             if incomplete_samples:
                 # Get the last incomplete sample (most recent)
@@ -238,7 +246,11 @@ def get_least_rated_article(session_id):
         
         # Fresh articles = metadata IDs that haven't been rated
         fresh_ids = set(all_metadata_ids) - set(rated_ids)
-        
+
+        # Apply filter_ids if provided (restrict to list_extra only)
+        if filter_ids:
+            fresh_ids = fresh_ids & set(filter_ids)
+
         # Exclude already-shown samples in this session
         fresh_ids = fresh_ids - set(exclude_samples)
         fresh_ids = list(fresh_ids)
@@ -280,6 +292,10 @@ def get_least_rated_article(session_id):
         # Exclude already-shown samples
         if exclude_samples:
             query = query.filter(~rating_counts.c.sample_id.in_(exclude_samples))
+
+        # Apply filter_ids if provided (restrict to list_extra only)
+        if filter_ids:
+            query = query.filter(rating_counts.c.sample_id.in_(filter_ids))
         
         results = query.limit(limit).all()
         

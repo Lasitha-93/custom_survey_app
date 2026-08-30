@@ -76,6 +76,9 @@ class SurveyApp {
         this.selectedFinalistSample = null;  // Track which sample the finalist is for
         this.stageBestImages = {};  // Best images for each stage {1: {...}, 2: {...}, ...}
         this.completedSampleIds = [];  // Track articles shown in this session for intelligent article selection
+        this.listMain = [];           // IDs from sample_filter.json - mandatory articles (all participants)
+        this.listExtra = [];          // IDs from sample_filter.json - optional extra articles
+        this.listMainCompleted = false;  // True once user has completed all list_main items
         this.totalPoints = 0;  // Gamification: accumulated points from source guesses
         this.currentBadgeTier = -1;  // Track current badge tier for detecting level-ups
         this.metadataPath = '/evaluation_sample_100_meta_data.json';
@@ -655,6 +658,16 @@ class SurveyApp {
         
         // Update criterion labels if cards are visible
         this.updateCriteriaLabels();
+
+        // Update list main complete modal text
+        const listMainCompleteTitle = document.getElementById('listMainCompleteTitle');
+        if (listMainCompleteTitle) {
+            listMainCompleteTitle.textContent = i18n.t('survey.listMainComplete.title');
+            document.getElementById('listMainCompleteMessage').textContent = i18n.t('survey.listMainComplete.message');
+            document.getElementById('listMainContinuePrompt').textContent = i18n.t('survey.listMainComplete.continuePrompt');
+            document.getElementById('listMainFinishBtn').textContent = i18n.t('survey.listMainComplete.finishButton');
+            document.getElementById('listMainContinueBtn').textContent = i18n.t('survey.listMainComplete.continueButton');
+        }
     }
 
     updateLanguageWarningBanner() {
@@ -766,6 +779,9 @@ class SurveyApp {
             console.log('[initializeApp] Step 2: Loading metadata...');
             await this.loadMetadata();
             console.log('[initializeApp] Step 2 complete: Loaded', this.metadata.length, 'samples');
+
+            // Step 2.5: Load sample filter (list_main and list_extra)
+            await this.loadSampleFilter();
             
             // Step 3: Collect demographics from all users (cookie consent is separate from research data collection)
             console.log('[initializeApp] Step 3: Checking demographics requirement...');
@@ -782,6 +798,13 @@ class SurveyApp {
             console.log('[initializeApp] Step 4: Restoring session progress...');
             await this.restoreSessionProgress();
             console.log('[initializeApp] Step 4 complete: Session restored with', this.completedSampleIds.length, 'completed articles, Stage', this.currentStage);
+
+            // Check if returning user has already completed list_main
+            if (this.listMain.length > 0 && this.isListMainComplete()) {
+                this.listMainCompleted = true;
+                console.log('[initializeApp] Returning user has completed list_main, entering extra mode');
+                document.getElementById('totalSamples').textContent = this.listExtra.length;
+            }
             
             // Step 4.5: Load stored stage best images (for next sample we'll display)
             console.log('[initializeApp] Step 4.5: Loading stored stage best images will happen during displaySample');
@@ -869,13 +892,86 @@ class SurveyApp {
         return this.metadata.find(sample => sample.id === sampleId) || null;
     }
 
-    async fetchNextLeastRatedArticle() {
+    async loadSampleFilter() {
+        try {
+            const response = await fetch('/sample_filter.json');
+            if (!response.ok) throw new Error('sample_filter.json not found');
+            const filter = await response.json();
+            this.listMain = filter.list_main || [];
+            this.listExtra = filter.list_extra || [];
+
+            // Filter metadata to only items present in list_main or list_extra
+            const allowedIds = new Set([...this.listMain, ...this.listExtra]);
+            if (allowedIds.size > 0) {
+                this.metadata = this.metadata.filter(s => allowedIds.has(s.id));
+            }
+
+            // Set progress total to list_main length for initial phase
+            if (this.listMain.length > 0) {
+                document.getElementById('totalSamples').textContent = this.listMain.length;
+            }
+            console.log(`[loadSampleFilter] list_main: ${this.listMain.length} IDs, list_extra: ${this.listExtra.length} IDs`);
+        } catch (e) {
+            console.warn('[loadSampleFilter] Could not load sample_filter.json, using all metadata:', e.message);
+        }
+    }
+
+    isListMainComplete() {
+        if (this.listMain.length === 0) return false;
+        return this.listMain.every(id => this.completedSampleIds.includes(id));
+    }
+
+    getNextListMainSample() {
+        // Returns the first list_main item not yet completed (fixed order)
+        for (const id of this.listMain) {
+            if (!this.completedSampleIds.includes(id)) {
+                return this.getSampleById(id);
+            }
+        }
+        return null; // all list_main items done
+    }
+
+    showListMainCompleteModal() {
+        const modal = document.getElementById('listMainCompleteModal');
+        if (!modal) return;
+        document.getElementById('listMainCompleteTitle').textContent = i18n.t('survey.listMainComplete.title');
+        document.getElementById('listMainCompleteMessage').textContent = i18n.t('survey.listMainComplete.message');
+        document.getElementById('listMainContinuePrompt').textContent = i18n.t('survey.listMainComplete.continuePrompt');
+        document.getElementById('listMainFinishBtn').textContent = i18n.t('survey.listMainComplete.finishButton');
+        document.getElementById('listMainContinueBtn').textContent = i18n.t('survey.listMainComplete.continueButton');
+        modal.classList.remove('hidden');
+    }
+
+    async _selectNextSample() {
+        // Selects the next sample based on current phase (list_main fixed order, list_extra intelligent)
+        if (!this.listMainCompleted && this.listMain.length > 0) {
+            const sample = this.getNextListMainSample();
+            if (sample) {
+                this.currentSampleId = sample.id;
+                return sample;
+            }
+            // All list_main done - show transition modal
+            this.showListMainCompleteModal();
+            return null;
+        } else {
+            // List extra phase (or no filter loaded) - intelligent selection via backend
+            const filterIds = this.listExtra.length > 0 ? this.listExtra : null;
+            const result = await this.fetchNextLeastRatedArticle(filterIds);
+            if (result) return result.sample;
+            // All extra done too
+            this.showThankYouMessage();
+            return null;
+        }
+    }
+
+    async fetchNextLeastRatedArticle(filterIds = null) {
         /**
          * Fetch the next article using three-phase intelligent selection:
          * Phase 0 (Resume): Find incomplete articles from current session
          * Phase 1 (Coverage): Get fresh articles (no ratings yet)
          * Phase 2 (Balancing): Get least-rated articles to balance distribution
-         * 
+         *
+         * filterIds: optional array of IDs to restrict selection to (e.g. list_extra)
          * Returns {sample, phase, stage} or null if all articles shown
          */
         try {
@@ -883,8 +979,12 @@ class SurveyApp {
             console.log('[fetchNextLeastRatedArticle] Completed samples so far:', this.completedSampleIds);
             
             const excludeStr = this.completedSampleIds.join(',');
+            let articleUrl = `${this.apiBaseUrl}/sessions/${this.sessionId}/least-rated-article?exclude_samples=${excludeStr}&limit=1`;
+            if (filterIds && filterIds.length > 0) {
+                articleUrl += `&filter_ids=${filterIds.join(',')}`;
+            }
             const response = await fetch(
-                `${this.apiBaseUrl}/sessions/${this.sessionId}/least-rated-article?exclude_samples=${excludeStr}&limit=1`,
+                articleUrl,
                 {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' }
@@ -952,6 +1052,24 @@ class SurveyApp {
         document.getElementById('articleBtn').addEventListener('click', (e) => this.toggleArticleView(e.target));
         document.getElementById('summaryBtn').addEventListener('click', (e) => this.toggleSummaryView(e.target));
         document.getElementById('leaveBtn').addEventListener('click', () => this.showLeaveConfirmation());
+
+        // List main completion modal buttons
+        const listMainContinueBtn = document.getElementById('listMainContinueBtn');
+        const listMainFinishBtn = document.getElementById('listMainFinishBtn');
+        if (listMainContinueBtn) {
+            listMainContinueBtn.addEventListener('click', async () => {
+                document.getElementById('listMainCompleteModal').classList.add('hidden');
+                this.listMainCompleted = true;
+                document.getElementById('totalSamples').textContent = this.listExtra.length;
+                await this.displaySample();
+            });
+        }
+        if (listMainFinishBtn) {
+            listMainFinishBtn.addEventListener('click', () => {
+                document.getElementById('listMainCompleteModal').classList.add('hidden');
+                this.showThankYouMessage();
+            });
+        }
     }
 
     updateMainInstructionBanner() {
@@ -982,27 +1100,15 @@ class SurveyApp {
                 console.log('[displaySample] Resuming article from restore:', this.currentSampleId);
                 sample = this.getSampleById(this.currentSampleId);
                 if (!sample) {
-                    console.log('[displaySample] Restored sample not found, fetching new article');
-                    const result = await this.fetchNextLeastRatedArticle();
-                    if (result) {
-                        sample = result.sample;
-                        resumePhase = result.phase === 'resume';
-                    }
+                    console.log('[displaySample] Restored sample not found, selecting next article');
+                    sample = await this._selectNextSample();
+                    if (!sample) return; // modal or completion already shown
                 }
             } else {
-                // Starting a new article - use intelligent selection
-                console.log('[displaySample] Starting new article, using intelligent selection');
-                const result = await this.fetchNextLeastRatedArticle();
-                if (result) {
-                    sample = result.sample;
-                    resumePhase = result.phase === 'resume';
-                }
-            }
-            
-            if (!sample) {
-                console.log('[displaySample] No more articles available - showing completion');
-                this.showCompletion();
-                return;
+                // Starting a new article
+                console.log('[displaySample] Starting new article...');
+                sample = await this._selectNextSample();
+                if (!sample) return; // modal or completion already shown
             }
         } else {
             // Continue with the current article for stages 2-6
@@ -1032,12 +1138,26 @@ class SurveyApp {
 
         // Update progress - show article count and stage
         document.getElementById('stageProgress').textContent = this.currentStage;
-        // Show: (completed articles + current article) - just the number, HTML has "/ 100" part
-        const articleNumber = this.completedSampleIds.length + 1;
+
+        // Progress display depends on current phase (list_main vs list_extra)
+        let articleNumber, progressTotal, progressPercent;
+        if (!this.listMainCompleted && this.listMain.length > 0) {
+            const completedMainCount = this.completedSampleIds.filter(id => this.listMain.includes(id)).length;
+            articleNumber = completedMainCount + 1;
+            progressTotal = this.listMain.length;
+            progressPercent = (completedMainCount / this.listMain.length) * 100;
+        } else if (this.listMainCompleted && this.listExtra.length > 0) {
+            const completedExtraCount = this.completedSampleIds.filter(id => this.listExtra.includes(id)).length;
+            articleNumber = completedExtraCount + 1;
+            progressTotal = this.listExtra.length;
+            progressPercent = (completedExtraCount / this.listExtra.length) * 100;
+        } else {
+            articleNumber = this.completedSampleIds.length + 1;
+            progressTotal = this.metadata.length;
+            progressPercent = (this.completedSampleIds.length / this.metadata.length) * 100;
+        }
         document.getElementById('currentSample').textContent = articleNumber;
-        
-        // For progress bar, show percentage based on completed articles
-        const progressPercent = ((this.completedSampleIds.length) / this.metadata.length) * 100;
+        document.getElementById('totalSamples').textContent = progressTotal;
         document.getElementById('progressFill').style.width = Math.min(progressPercent, 100) + '%';
 
         // Load article and summary
