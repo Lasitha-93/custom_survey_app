@@ -316,7 +316,7 @@ body {
     font-size: 12px;
     font-weight: 600;
     color: #2c3e50;
-    min-width: 75px;
+    width: 82px;
     text-transform: capitalize;
     letter-spacing: 0.3px;
     white-space: nowrap;
@@ -1028,7 +1028,7 @@ body {
 
     .criterion-label {
         font-size: 11px;
-        min-width: 60px;
+        width: 72px;
     }
 
     /* Container height fix for mobile browsers (address bar overlap) */
