@@ -916,8 +916,11 @@ body {
     }
 
     .action-buttons {
-        margin-top: 15px;
-        padding: 15px;
+        width: fit-content;
+        align-self: center;
+        margin: 15px auto 0;
+        padding: 10px 12px;
+        min-height: auto;
     }
 
     /* Header responsiveness */
