@@ -431,7 +431,7 @@ body {
     margin: 15px auto 0;
     gap: 15px;
     padding: 8px 16px;
-    background-color: rgba(240, 240, 240, 0.3);
+    background-color: transparent;
     border-radius: 8px;
 }
 
