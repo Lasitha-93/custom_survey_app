@@ -429,10 +429,9 @@ body {
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: fit-content;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
     gap: 15px;
     padding: 8px 16px;
     background-color: rgba(0, 0, 0, 0.35);
