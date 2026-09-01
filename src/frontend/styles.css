@@ -230,15 +230,16 @@ body {
     padding: 20px;
     box-shadow: var(--card-shadow);
     border: 1px solid var(--border-color);
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .cards-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    flex-shrink: 0;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
 }
 
 /* Image Cards */
@@ -251,6 +252,7 @@ body {
     display: flex;
     flex-direction: column;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
     width: 100%;
 }
 
@@ -408,10 +410,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
     margin-top: 20px;
     gap: 15px;
     padding: 8px;
-    background-color: #f0f0f0;
+    background-color: rgba(240, 240, 240, 0.3);
     border-radius: 8px;
 }
 
