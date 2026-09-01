@@ -231,6 +231,7 @@ body {
     box-shadow: var(--card-shadow);
     border: 1px solid var(--border-color);
     overflow: hidden;
+    position: relative;
 }
 
 .cards-container {
@@ -240,6 +241,7 @@ body {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
+    padding-bottom: 60px;
     scrollbar-width: thin;
     scrollbar-color: var(--secondary-color) var(--border-color);
 }
@@ -426,12 +428,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-shrink: 0;
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
     width: fit-content;
-    margin: 15px auto 0;
     gap: 15px;
     padding: 8px 16px;
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.35);
     border-radius: 8px;
 }
 
@@ -934,10 +938,13 @@ body {
     }
 
     .action-buttons {
+        position: static;
+        transform: none;
         width: fit-content;
         align-self: center;
         margin: 15px auto 0;
         padding: 10px 12px;
+        background-color: rgba(240, 240, 240, 0.3);
         min-height: auto;
     }
 
