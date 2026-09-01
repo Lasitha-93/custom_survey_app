@@ -31,7 +31,7 @@ body {
 .header {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
-    padding: 20px;
+    padding: 12px 20px;
     box-shadow: var(--card-shadow);
 }
 
@@ -130,7 +130,7 @@ body {
     margin: 0 auto;
     width: 100%;
     gap: 20px;
-    padding: 20px;
+    padding: 14px 20px;
     overflow: hidden;
 }
 
@@ -240,6 +240,22 @@ body {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) var(--border-color);
+}
+
+.cards-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.cards-container::-webkit-scrollbar-track {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.cards-container::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-color);
+    border-radius: 4px;
 }
 
 /* Image Cards */
@@ -268,7 +284,7 @@ body {
     background-color: #f0f0f0;
     flex-shrink: 0;
     border-radius: 8px 8px 0 0;
-    max-height: 200px;
+    max-height: 170px;
 }
 
 .card-footer {
@@ -411,9 +427,10 @@ body {
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    margin-top: 20px;
+    width: fit-content;
+    margin: 15px auto 0;
     gap: 15px;
-    padding: 8px;
+    padding: 8px 16px;
     background-color: rgba(240, 240, 240, 0.3);
     border-radius: 8px;
 }
