@@ -251,7 +251,6 @@ body {
     display: flex;
     flex-direction: column;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    height: 100%;
     width: 100%;
 }
 
