@@ -230,15 +230,15 @@ body {
     padding: 20px;
     box-shadow: var(--card-shadow);
     border: 1px solid var(--border-color);
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .cards-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    overflow: auto;
-    flex: 1;
+    flex-shrink: 0;
 }
 
 /* Image Cards */
