@@ -61,6 +61,7 @@ def reset_database():
         tables = [
             'finalist_selections',
             'stage_best_images',
+            'card_comments',
             'ratings',
             'demographics',
             'sessions',
