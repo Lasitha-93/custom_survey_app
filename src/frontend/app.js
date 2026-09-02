@@ -1405,7 +1405,7 @@ class SurveyApp {
         return shuffled;
     }
 
-    getImagesForPipeline1(sample) {
+    getImagesForPipeline1(sample, stage = this.currentStage) {
         console.log('[getImagesForPipeline1] Starting - getting 7 images (1 original + 6 generated)');
         let images = [];
         const imagePaths = {};
@@ -1447,14 +1447,14 @@ class SurveyApp {
         }
 
         // Randomize image order (seeded for consistency across sessions)
-        const seed = sample.id + this.currentStage; // Use sample ID + stage as seed
+        const seed = sample.id + stage; // Use sample ID + stage as seed
         images = this.seededShuffleArray(images, seed);
 
         console.log('[getImagesForPipeline1] Total images:', images.length);
         return images;
     }
 
-    getImagesForCaptionModel(sample, modelName) {
+    getImagesForCaptionModel(sample, modelName, stage = this.currentStage) {
         console.log('[getImagesForCaptionModel] Getting 6 images for caption model:', modelName);
         let images = [];
         let imagePaths = {};
@@ -1497,7 +1497,7 @@ class SurveyApp {
         }
 
         // Randomize image order (seeded for consistency across sessions)
-        const seed = 1000 + sample.id + this.currentStage; // Use sample ID + stage as seed
+        const seed = 1000 + sample.id + stage; // Use sample ID + stage as seed
         images = this.seededShuffleArray(images, seed);
 
         console.log('[getImagesForCaptionModel] Total images:', images.length);
@@ -2299,12 +2299,12 @@ class SurveyApp {
         let caption = '';
         
         if (stage === 1) {
-            images = this.getImagesForPipeline1(sample);
+            images = this.getImagesForPipeline1(sample, stage);
             caption = this.getTranslatedCaption(sample, sample.caption);
         } else {
             const captionModels = ['gemini_1_5_flash', 'gemini_2_5_pro', 'deepseek_r1', 'llma_3_1_8b'];
             const modelName = captionModels[stage - 2];
-            images = this.getImagesForCaptionModel(sample, modelName);
+            images = this.getImagesForCaptionModel(sample, modelName, stage);
             const captionModelData = this.getCaptionModelData(sample, modelName);
             caption = captionModelData ? this.getTranslatedCaption(captionModelData, captionModelData.generated_caption) : 'Caption not available';
         }
@@ -2427,12 +2427,12 @@ class SurveyApp {
                     if (!sample) continue;
                     
                     if (stage === 1) {
-                        images = this.getImagesForPipeline1(sample);
+                        images = this.getImagesForPipeline1(sample, stage);
                         caption = this.getTranslatedCaption(sample, sample.caption);
                     } else {
                         const captionModels = ['gemini_1_5_flash', 'gemini_2_5_pro', 'deepseek_r1', 'llma_3_1_8b'];
                         const modelName = captionModels[stage - 2];
-                        images = this.getImagesForCaptionModel(sample, modelName);
+                        images = this.getImagesForCaptionModel(sample, modelName, stage);
                         const captionModelData = this.getCaptionModelData(sample, modelName);
                         caption = captionModelData ? this.getTranslatedCaption(captionModelData, captionModelData.generated_caption) : 'Caption not available';
                         model = modelName;
@@ -3111,11 +3111,11 @@ class SurveyApp {
     getImagesForStage(sample, stage) {
         // Reuse existing logic to get images for a specific stage
         if (stage === 1) {
-            return this.getImagesForPipeline1(sample);
+            return this.getImagesForPipeline1(sample, stage);
         } else {
             const stageIndex = stage - 2;
             const captionModelName = this.captionModelQueue[stageIndex];
-            return this.getImagesForCaptionModel(sample, captionModelName);
+            return this.getImagesForCaptionModel(sample, captionModelName, stage);
         }
     }
 
@@ -3134,11 +3134,11 @@ class SurveyApp {
         // Returns images WITH seeded randomization (consistent across sessions)
         // This is used for finalization to match the order from stage display
         if (stage === 1) {
-            return this.getImagesForPipeline1(sample);
+            return this.getImagesForPipeline1(sample, stage);
         } else {
             const captionModels = ['gemini_1_5_flash', 'gemini_2_5_pro', 'deepseek_r1', 'llma_3_1_8b'];
             const modelName = captionModels[stage - 2];
-            return this.getImagesForCaptionModel(sample, modelName);
+            return this.getImagesForCaptionModel(sample, modelName, stage);
         }
     }
 
