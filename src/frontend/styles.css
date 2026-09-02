@@ -459,7 +459,7 @@ body {
     gap: 4px;
     font-size: 20px;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     min-width: 130px;
 }
 
@@ -1149,21 +1149,32 @@ body {
         font-size: 12px;
     }
 
-    /* Stars — bigger touch targets on mobile */
+    /* Stars — bigger touch targets on mobile, but small enough to never wrap onto a second line */
     .star {
-        width: 32px;
-        height: 32px;
-        font-size: 24px;
+        width: 26px;
+        height: 26px;
+        font-size: 20px;
     }
 
     .star-rating {
         min-width: unset;
-        gap: 2px;
+        gap: 1px;
+        flex-wrap: nowrap;
     }
 
     .criterion-label {
         font-size: 11px;
         width: 72px;
+    }
+
+    .criterion-info {
+        width: 14px;
+        height: 14px;
+        font-size: 10px;
+    }
+
+    .criterion-rating {
+        gap: 6px;
     }
 
     /* Container height fix for mobile browsers (address bar overlap) */
