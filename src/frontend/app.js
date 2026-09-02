@@ -73,6 +73,7 @@ class SurveyApp {
         this.currentStage = 1; // 1 = Pipeline 1, 2-5 = Pipeline 2 caption models
         this.ratings = {};      // In-memory cache for fast UI updates
         this.comments = {};     // In-memory cache of card comments, keyed by `${sampleId}_${stage}_${cardIndex}`
+        this._criterionTooltipAnchor = null;  // Currently active criterion info icon (for tap-to-toggle tooltip)
         this.selectedFinalistCard = null;  // Track selected finalist for stage 6
         this.selectedFinalistSample = null;  // Track which sample the finalist is for
         this.stageBestImages = {};  // Best images for each stage {1: {...}, 2: {...}, ...}
@@ -1096,6 +1097,13 @@ class SurveyApp {
                 this.showThankYouMessage();
             });
         }
+
+        // Close criterion info tooltip when tapping/clicking anywhere else (needed for mobile tap-to-toggle)
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.criterion-info')) {
+                this.hideCriterionTooltip();
+            }
+        });
     }
 
     updateMainInstructionBanner() {
@@ -1631,7 +1639,36 @@ class SurveyApp {
                 // Label
                 const label = document.createElement('span');
                 label.className = 'criterion-label';
-                label.textContent = translatedLabel + ':';
+                label.textContent = translatedLabel;
+
+                // Info icon with tooltip explaining this criterion
+                const infoIcon = document.createElement('span');
+                infoIcon.className = 'criterion-info';
+                infoIcon.textContent = 'i';
+                infoIcon.tabIndex = 0;
+                infoIcon.setAttribute('role', 'button');
+                infoIcon.setAttribute('aria-label', `More info about ${translatedLabel}`);
+                const criterionDescription = i18n.t(`criteria.${labelKey}.description`);
+                infoIcon.addEventListener('mouseenter', (e) => this.showCriterionTooltip(criterionDescription, e.currentTarget));
+                infoIcon.addEventListener('mouseleave', () => this.hideCriterionTooltip());
+                infoIcon.addEventListener('focus', (e) => this.showCriterionTooltip(criterionDescription, e.currentTarget));
+                infoIcon.addEventListener('blur', () => this.hideCriterionTooltip());
+                infoIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleCriterionTooltip(criterionDescription, e.currentTarget);
+                });
+
+                // Wrap the icon with the colon so they stay tight together
+                const infoWrapper = document.createElement('span');
+                infoWrapper.className = 'criterion-info-wrapper';
+                infoWrapper.appendChild(infoIcon);
+                const colon = document.createElement('span');
+                colon.className = 'criterion-colon';
+                colon.textContent = ':';
+                infoWrapper.appendChild(colon);
+
+                criterionDiv.appendChild(label);
+                criterionDiv.appendChild(infoWrapper);
 
                 // Stars or Binary choice based on criterion type
                 if (criterion.type === 'binary') {
@@ -1684,7 +1721,6 @@ class SurveyApp {
                     binaryContainer.appendChild(aiInput);
                     binaryContainer.appendChild(aiLabel);
 
-                    criterionDiv.appendChild(label);
                     criterionDiv.appendChild(binaryContainer);
                 } else {
                     // Stars (1-5 rating)
@@ -1709,7 +1745,6 @@ class SurveyApp {
                         stars.appendChild(star);
                     }
 
-                    criterionDiv.appendChild(label);
                     criterionDiv.appendChild(stars);
                 }
 
@@ -2015,6 +2050,44 @@ class SurveyApp {
             console.log('[saveComment] ✅ Comment saved for card', cardIndex);
         } catch (error) {
             console.error('[saveComment] ❌ ERROR:', error.message);
+        }
+    }
+
+    showCriterionTooltip(text, anchorEl) {
+        const tooltip = document.getElementById('criterionTooltip');
+        if (!tooltip) return;
+
+        tooltip.textContent = text;
+        tooltip.classList.add('visible');
+        this._criterionTooltipAnchor = anchorEl;
+
+        const anchorRect = anchorEl.getBoundingClientRect();
+        const tooltipRect = tooltip.getBoundingClientRect();
+
+        let left = anchorRect.left + (anchorRect.width / 2) - (tooltipRect.width / 2);
+        left = Math.max(8, Math.min(left, window.innerWidth - tooltipRect.width - 8));
+
+        let top = anchorRect.bottom + 6;
+        if (top + tooltipRect.height > window.innerHeight - 8) {
+            // Not enough room below - flip to show above the icon instead
+            top = anchorRect.top - tooltipRect.height - 6;
+        }
+
+        tooltip.style.left = `${left}px`;
+        tooltip.style.top = `${top}px`;
+    }
+
+    hideCriterionTooltip() {
+        const tooltip = document.getElementById('criterionTooltip');
+        if (tooltip) tooltip.classList.remove('visible');
+        this._criterionTooltipAnchor = null;
+    }
+
+    toggleCriterionTooltip(text, anchorEl) {
+        if (this._criterionTooltipAnchor === anchorEl) {
+            this.hideCriterionTooltip();
+        } else {
+            this.showCriterionTooltip(text, anchorEl);
         }
     }
 
