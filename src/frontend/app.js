@@ -795,10 +795,31 @@ class SurveyApp {
             
             if (cookieSessionId) {
                 console.log('[initializeApp] Found existing session cookie:', cookieSessionId);
-                this.sessionId = cookieSessionId;
-                isReturningUser = true;
-                shouldCollectDemographics = true;  // Returning user with cookie should have demographics
-                this.showNotification(i18n.t('notifications.sessionResumed'));
+                
+                // Validate the session still exists on the backend (it may have been cleared,
+                // e.g. by an admin database reset) before trusting it
+                const sessionCheckResponse = await fetch(`${this.apiBaseUrl}/sessions/${cookieSessionId}`);
+                
+                if (sessionCheckResponse.ok) {
+                    this.sessionId = cookieSessionId;
+                    isReturningUser = true;
+                    shouldCollectDemographics = true;  // Returning user with cookie should have demographics
+                    this.showNotification(i18n.t('notifications.sessionResumed'));
+                } else {
+                    console.warn('[initializeApp] Session cookie is stale (session no longer exists on server) - clearing and starting fresh');
+                    cookieUtils.remove('survey_session_id');
+                    shouldCollectDemographics = await this.showConsentBanner();  // true = Remember Me, false = Skip
+                    
+                    if (!this.sessionId) {
+                        throw new Error('Failed to create session');
+                    }
+                    
+                    if (shouldCollectDemographics) {
+                        console.log('[initializeApp] User consented (Remember Me) - will collect demographics');
+                    } else {
+                        console.log('[initializeApp] User skipped consent (ghost user) - no demographics collection');
+                    }
+                }
             } else {
                 console.log('[initializeApp] No session cookie found - showing consent banner');
                 shouldCollectDemographics = await this.showConsentBanner();  // true = Remember Me, false = Skip
