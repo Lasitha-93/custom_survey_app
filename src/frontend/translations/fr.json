@@ -16,6 +16,7 @@
       "continueButton": "Continuer"
     },
     "sampleCount": "Image {{current}} sur {{total}}",
+    "progressLabel": "Progrès",
     "finalization": "Finalisation",
     "finalizationInstructions": "TÂCHE: Examinez vos images les mieux notées et sélectionnez votre meilleure image globale pour cet article.",
     "selectFinalistMessage": "Veuillez sélectionner une image finaliste",

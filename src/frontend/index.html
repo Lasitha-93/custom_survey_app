@@ -182,23 +182,36 @@
                     <div id="userBadge"></div>
                     <!-- Language Switcher & Exit Controls -->
                     <div class="language-switcher">
-                        <label for="languageSelect" style="margin-right: 8px; font-size: 18px;">🌐</label>
-                        <select id="languageSelect" onchange="app.changeLanguage(this.value)">
-                            <option value="en">English</option>
-                            <option value="de">Deutsch</option>
-                            <option value="fr">Français</option>
-                            <option value="si">සිංහල</option>
-                        </select>
+                        <div class="language-select-row">
+                            <label for="languageSelect" style="font-size: 18px;">🌐</label>
+                            <select id="languageSelect" onchange="app.changeLanguage(this.value)">
+                                <option value="en">English</option>
+                                <option value="de">Deutsch</option>
+                                <option value="fr">Français</option>
+                                <option value="si">සිංහල</option>
+                            </select>
+                        </div>
                         <button class="leave-btn" id="leaveBtn" title="Exit survey">Leave Survey</button>
                     </div>
                 </div>
                 <div class="progress-section">
-                    <div class="progress-text">
-                        <span id="stageLabel">Stage</span> <span id="stageProgress">1</span>/6
-                        <span style="margin-left: 20px;"><span id="sampleLabel">Sample</span> <span id="currentSample">1</span> / <span id="totalSamples">100</span></span>
+                    <div class="progress-row">
+                        <span class="progress-row-label" id="sampleLabel">Progress</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                            <span class="progress-bar-text" id="progressBarText">1 / 100</span>
+                        </div>
                     </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
+                    <div class="progress-row">
+                        <span class="progress-row-label" id="stageLabel">Stage</span>
+                        <div class="stage-segments" id="stageSegments">
+                            <div class="stage-segment"></div>
+                            <div class="stage-segment"></div>
+                            <div class="stage-segment"></div>
+                            <div class="stage-segment"></div>
+                            <div class="stage-segment"></div>
+                            <div class="stage-segment"></div>
+                        </div>
                     </div>
                 </div>
             </div>

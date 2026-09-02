@@ -16,6 +16,7 @@
       "continueButton": "Continue Survey"
     },
     "sampleCount": "Image {{current}} of {{total}}",
+    "progressLabel": "Progress",
     "finalization": "Finalization",
     "finalizationInstructions": "TASK: Review your top-rated images and select your overall best image for this article.",
     "selectFinalistMessage": "Please select a finalist image",

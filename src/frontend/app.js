@@ -607,6 +607,19 @@ class SurveyApp {
         console.log('[animatePointsFloating] Animating +' + points + ' points');
     }
 
+    updateStageSegments(stage) {
+        /**
+         * Update the segmented stage indicator (6 blocks) in the header.
+         * Segments before the current stage are marked completed, current stage is active.
+         */
+        const segments = document.querySelectorAll('#stageSegments .stage-segment');
+        segments.forEach((seg, idx) => {
+            const segStage = idx + 1;
+            seg.classList.toggle('completed', segStage < stage);
+            seg.classList.toggle('active', segStage === stage);
+        });
+    }
+
     updateBadgeDisplay() {
         const badgeInfo = this.getBadgeInfo(this.totalPoints);
         
@@ -673,7 +686,7 @@ class SurveyApp {
         const stageLabel = document.getElementById('stageLabel');
         const sampleLabel = document.getElementById('sampleLabel');
         if (stageLabel) stageLabel.textContent = i18n.t('survey.stage').split(' ')[0]; // Get "Stage" part
-        if (sampleLabel) sampleLabel.textContent = i18n.t('survey.sampleCount').split(' ')[0]; // Get "Sample" part
+        if (sampleLabel) sampleLabel.textContent = i18n.t('survey.progressLabel');
         
         // Update button labels
         const articleBtn = document.getElementById('articleBtn');
@@ -830,7 +843,6 @@ class SurveyApp {
             if (this.listMain.length > 0 && this.isListMainComplete()) {
                 this.listMainCompleted = true;
                 console.log('[initializeApp] Returning user has completed list_main, entering extra mode');
-                document.getElementById('totalSamples').textContent = this.listExtra.length;
             }
             
             // Step 4.5: Load stored stage best images (for next sample we'll display)
@@ -902,7 +914,6 @@ class SurveyApp {
             this.metadata = await response.json();
             console.log('[loadMetadata] Successfully loaded', this.metadata.length, 'samples');
             
-            document.getElementById('totalSamples').textContent = this.metadata.length;
             console.log('[loadMetadata] Metadata loading complete');
             this.updateDebugPanel();
         } catch (error) {
@@ -935,7 +946,7 @@ class SurveyApp {
 
             // Set progress total to list_main length for initial phase
             if (this.listMain.length > 0) {
-                document.getElementById('totalSamples').textContent = this.listMain.length;
+                console.log(`[loadSampleFilter] Mandatory list_main phase active`);
             }
             console.log(`[loadSampleFilter] list_main: ${this.listMain.length} IDs, list_extra: ${this.listExtra.length} IDs`);
         } catch (e) {
@@ -1087,7 +1098,6 @@ class SurveyApp {
             listMainContinueBtn.addEventListener('click', async () => {
                 document.getElementById('listMainCompleteModal').classList.add('hidden');
                 this.listMainCompleted = true;
-                document.getElementById('totalSamples').textContent = this.listExtra.length;
                 await this.displaySample();
             });
         }
@@ -1171,7 +1181,7 @@ class SurveyApp {
         await this.loadRatingsFromBackend();
 
         // Update progress - show article count and stage
-        document.getElementById('stageProgress').textContent = this.currentStage;
+        this.updateStageSegments(this.currentStage);
 
         // Progress display depends on current phase (list_main vs list_extra)
         let articleNumber, progressTotal, progressPercent;
@@ -1190,8 +1200,7 @@ class SurveyApp {
             progressTotal = this.metadata.length;
             progressPercent = (this.completedSampleIds.length / this.metadata.length) * 100;
         }
-        document.getElementById('currentSample').textContent = articleNumber;
-        document.getElementById('totalSamples').textContent = progressTotal;
+        document.getElementById('progressBarText').textContent = `${articleNumber} / ${progressTotal}`;
         document.getElementById('progressFill').style.width = Math.min(progressPercent, 100) + '%';
 
         // Load article and summary
@@ -2871,10 +2880,12 @@ class SurveyApp {
         await this.updateSessionProgress();
 
         // Update progress
-        document.getElementById('stageProgress').textContent = '6';
+        this.updateStageSegments(6);
         document.getElementById('stageLabel').textContent = i18n.t('survey.finalization');
-        document.getElementById('currentSample').textContent = this.currentSampleIndex + 1;
-        const progress = ((this.currentSampleIndex + 1) / this.metadata.length) * 100;
+        const finalizationTotal = this.metadata.length;
+        const finalizationCurrent = this.currentSampleIndex + 1;
+        document.getElementById('progressBarText').textContent = `${finalizationCurrent} / ${finalizationTotal}`;
+        const progress = (finalizationCurrent / finalizationTotal) * 100;
         document.getElementById('progressFill').style.width = progress + '%';
 
         // Hide caption display for finalization

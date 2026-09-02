@@ -63,18 +63,34 @@ body {
 
 .progress-section {
     display: flex;
-    align-items: center;
-    gap: 15px;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 220px;
 }
 
-.progress-text {
-    font-size: 14px;
-    min-width: 100px;
+.progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-row-label {
+    display: flex;
+    justify-content: space-between;
+    width: 70px;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.progress-row-label::after {
+    content: ':';
 }
 
 .progress-bar {
+    position: relative;
     flex: 1;
-    height: 8px;
+    height: 20px;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 4px;
     overflow: hidden;
@@ -83,8 +99,44 @@ body {
 
 .progress-fill {
     height: 100%;
-    background-color: var(--success-color);
+    background-color: var(--secondary-color);
     transition: width 0.3s ease;
+}
+
+.progress-bar-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+    white-space: nowrap;
+}
+
+.stage-segments {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    max-width: 300px;
+}
+
+.stage-segment {
+    flex: 1;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.stage-segment.completed,
+.stage-segment.active {
+    background-color: var(--success-color);
 }
 /* Language Warning Banner */
 .language-warning-banner {
@@ -1088,9 +1140,13 @@ body {
         max-width: none;
     }
 
-    .progress-text {
+    .stage-segments {
+        max-width: none;
+    }
+
+    .progress-row-label {
+        width: 55px;
         font-size: 12px;
-        min-width: 70px;
     }
 
     /* Stars — bigger touch targets on mobile */
@@ -1120,32 +1176,58 @@ body {
 /* Language Switcher */
 .language-switcher {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    flex-direction: column;
+    gap: 8px;
     flex-shrink: 0;
 }
 
-.language-switcher select {
-    padding: 8px 12px;
+.language-select-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
     background-color: white;
     border: 1px solid var(--border-color);
     border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    color: var(--text-color);
+    padding: 0 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
-.language-switcher select:hover {
+.language-select-row:hover {
     border-color: var(--secondary-color);
     box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
 }
 
+.language-select-row:focus-within {
+    border-color: var(--secondary-color);
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+}
+
+.language-switcher select {
+    padding: 2px 4px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-color);
+    box-shadow: none;
+    flex: 1;
+}
+
+.language-switcher select:focus {
+    outline: none;
+}
+
 .language-switcher .leave-btn {
-    padding: 8px 18px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 18px;
     font-size: 13px;
     white-space: nowrap;
+    text-align: center;
 }
 
 /* Modal Styles */
