@@ -101,12 +101,14 @@ def create_app(config_name=None):
     from routes.admin import admin_bp
     from routes.demographics import demographics_bp
     from routes.finalists import finalists_bp
+    from routes.comments import comments_bp
     
     app.register_blueprint(ratings_bp, url_prefix='/api/v1/ratings')
     app.register_blueprint(sessions_bp, url_prefix='/api/v1/sessions')
     app.register_blueprint(admin_bp, url_prefix='/api/v1/admin')
     app.register_blueprint(demographics_bp, url_prefix='/api/v1/demographics')
     app.register_blueprint(finalists_bp, url_prefix='/api/v1/finalists')
+    app.register_blueprint(comments_bp, url_prefix='/api/v1/comments')
     
     # Create tables and initialize metadata
     with app.app_context():

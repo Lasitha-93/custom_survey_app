@@ -72,6 +72,7 @@ class SurveyApp {
         this.currentSampleId = null;  // Track current sample ID (not index)
         this.currentStage = 1; // 1 = Pipeline 1, 2-5 = Pipeline 2 caption models
         this.ratings = {};      // In-memory cache for fast UI updates
+        this.comments = {};     // In-memory cache of card comments, keyed by `${sampleId}_${stage}_${cardIndex}`
         this.selectedFinalistCard = null;  // Track selected finalist for stage 6
         this.selectedFinalistSample = null;  // Track which sample the finalist is for
         this.stageBestImages = {};  // Best images for each stage {1: {...}, 2: {...}, ...}
@@ -465,6 +466,9 @@ class SurveyApp {
                 this.updateBadgeDisplay();
                 console.log('[restoreSessionProgress] Restored total points:', this.totalPoints, 'Badge tier:', this.currentBadgeTier);
                 
+                // Restore card comments (optional free-text notes left by the user)
+                await this.loadComments();
+                
                 // Safety check: if stage > 1 but no currentSampleId, reset to stage 1
                 // This prevents invalid state where article is missing
                 if (this.currentStage > 1 && !this.currentSampleId) {
@@ -507,6 +511,28 @@ class SurveyApp {
             this.currentSampleId = null;
             this.completedSampleIds = [];
             return false;
+        }
+    }
+
+    async loadComments() {
+        /**
+         * Fetch all previously saved card comments for this session and populate the local cache.
+         * Called once during session restore so comments survive a page reload.
+         */
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/comments/${this.sessionId}`);
+            if (!response.ok) {
+                console.warn('[loadComments] Could not fetch comments, status:', response.status);
+                return;
+            }
+            const data = await response.json();
+            (data.comments || []).forEach(comment => {
+                const commentKey = `${comment.sample_id}_${comment.stage}_${comment.card_index}`;
+                this.comments[commentKey] = comment.comment_text;
+            });
+            console.log('[loadComments] Restored', (data.comments || []).length, 'comments');
+        } catch (error) {
+            console.error('[loadComments] Error:', error);
         }
     }
 
@@ -1691,12 +1717,27 @@ class SurveyApp {
                 console.log('[displayCards] Card', index, '- criterion', criterion.label, 'added to footer');
             });
 
+            // Optional free-text comment box for this card
+            const commentWrapper = document.createElement('div');
+            commentWrapper.className = 'card-comment';
+
+            const commentInput = document.createElement('textarea');
+            commentInput.className = 'card-comment-input';
+            commentInput.placeholder = i18n.t('survey.commentPlaceholder');
+            commentInput.maxLength = 500;
+            commentInput.dataset.cardIndex = index;
+            commentInput.addEventListener('blur', (e) => this.saveComment(index, e.target.value));
+
+            commentWrapper.appendChild(commentInput);
+            footer.appendChild(commentWrapper);
+
             card.appendChild(imageWrapper);
             card.appendChild(footer);
             container.appendChild(card);
 
-            // Restore ratings if exist
+            // Restore ratings and comment if they exist
             this.restoreRatings(index);
+            this.restoreComment(index);
         });
         console.log('[displayCards] All', images.length, 'cards rendered');
     }
@@ -1906,6 +1947,74 @@ class SurveyApp {
                 const ratingValue = typeof ratingData === 'object' ? ratingData.rating : ratingData;
                 this.updateStarDisplay(cardIndex, criterion.key, ratingValue);
             }
+        }
+    }
+
+    restoreComment(cardIndex) {
+        const sample = this.getSampleById(this.currentSampleId);
+        if (!sample) {
+            console.warn('[restoreComment] Current sample not found');
+            return;
+        }
+
+        const commentKey = `${sample.id}_${this.currentStage}_${cardIndex}`;
+        const savedComment = this.comments[commentKey];
+        if (!savedComment) {
+            return;
+        }
+
+        const input = document.querySelector(`.card-comment-input[data-card-index="${cardIndex}"]`);
+        if (input) {
+            input.value = savedComment;
+        }
+    }
+
+    async saveComment(cardIndex, commentText) {
+        try {
+            if (!this.currentSampleId || !this.sessionId) {
+                console.warn('[saveComment] Session or sample not ready, skipping save');
+                return;
+            }
+
+            const sampleId = this.currentSampleId;
+            const commentKey = `${sampleId}_${this.currentStage}_${cardIndex}`;
+            const trimmedText = (commentText || '').trim();
+
+            // Skip the network call entirely if nothing changed
+            if ((this.comments[commentKey] || '') === trimmedText) {
+                return;
+            }
+
+            const payload = {
+                session_id: this.sessionId,
+                sample_id: sampleId,
+                stage: this.currentStage,
+                card_index: cardIndex,
+                comment_text: trimmedText
+            };
+
+            console.log('[saveComment] POST payload:', JSON.stringify(payload));
+
+            const response = await fetch(`${this.apiBaseUrl}/comments/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const responseText = await response.text();
+                throw new Error(`Failed to save comment. Status: ${response.status}. Response: ${responseText}`);
+            }
+
+            if (trimmedText) {
+                this.comments[commentKey] = trimmedText;
+            } else {
+                delete this.comments[commentKey];
+            }
+
+            console.log('[saveComment] ✅ Comment saved for card', cardIndex);
+        } catch (error) {
+            console.error('[saveComment] ❌ ERROR:', error.message);
         }
     }
 

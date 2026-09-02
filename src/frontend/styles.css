@@ -312,6 +312,30 @@ body {
     min-height: 36px;
 }
 
+.card-comment {
+    margin-top: 6px;
+}
+
+.card-comment-input {
+    width: 100%;
+    min-height: 44px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--text-color);
+    padding: 6px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--light-bg);
+}
+
+.card-comment-input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    background-color: white;
+}
+
 .criterion-label {
     font-size: 12px;
     font-weight: 600;

@@ -22,6 +22,7 @@ class Session(db.Model):
     demographics = db.relationship('Demographic', backref='session', lazy=True, cascade='all, delete-orphan', uselist=False)
     finalist_selections = db.relationship('FinalistSelection', backref='session', lazy=True, cascade='all, delete-orphan')
     stage_best_images = db.relationship('StageBestImage', backref='session', lazy=True, cascade='all, delete-orphan')
+    card_comments = db.relationship('CardComment', backref='session', lazy=True, cascade='all, delete-orphan')
     
     def to_dict(self):
         return {
@@ -180,6 +181,36 @@ class StageBestImage(db.Model):
             'image_path': self.image_path,
             'caption_text': self.caption_text,
             'created_at': self.created_at.isoformat()
+        }
+
+class CardComment(db.Model):
+    """Optional free-text comment left by a user on a specific image card"""
+    __tablename__ = 'card_comments'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(100), db.ForeignKey('sessions.id'), nullable=False)
+    sample_id = db.Column(db.Integer, nullable=False)  # Article ID
+    stage = db.Column(db.Integer, nullable=False)  # 1-6
+    card_index = db.Column(db.Integer, nullable=False)  # 0-6
+    comment_text = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Unique constraint: one comment per card per session
+    __table_args__ = (
+        db.UniqueConstraint('session_id', 'sample_id', 'stage', 'card_index', name='unique_card_comment'),
+    )
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'session_id': self.session_id,
+            'sample_id': self.sample_id,
+            'stage': self.stage,
+            'card_index': self.card_index,
+            'comment_text': self.comment_text,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
         }
 
 class User(db.Model):

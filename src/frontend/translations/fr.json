@@ -7,6 +7,7 @@
     "mainInstruction": "TÂCHE: Veuillez lire la légende de l'image et évaluer les images ci-dessous. Vous pouvez lire l'article ou le résumé de l'article pour obtenir plus de contexte sur la légende et l'image",
     "stage": "Étape {{number}} sur {{total}}",
     "imageCaption": "Légende de l'image",
+    "commentPlaceholder": "Ajouter un commentaire (facultatif)",
     "listMainComplete": {
       "title": "\ud83c\udf89 Merci!",
       "message": "Vous avez compl\u00e9t\u00e9 avec succ\u00e8s la partie obligatoire du sondage. Votre contribution est grandement appr\u00e9ci\u00e9e!",

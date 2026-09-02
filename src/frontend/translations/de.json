@@ -7,6 +7,7 @@
     "mainInstruction": "AUFGABE: Bitte lesen Sie die Bildunterschrift und bewerten Sie die Bilder unten. Sie können den Artikel oder die Artikelzusammenfassung lesen, um mehr Kontext über die Bildunterschrift und das Bild zu erhalten",
     "stage": "Stufe {{number}} von {{total}}",
     "imageCaption": "Bildunterschrift",
+    "commentPlaceholder": "Kommentar hinzufügen (optional)",
     "listMainComplete": {
       "title": "\ud83c\udf89 Vielen Dank!",
       "message": "Sie haben den Pflichtteil der Umfrage erfolgreich abgeschlossen. Ihr Beitrag wird sehr gesch\u00e4tzt!",

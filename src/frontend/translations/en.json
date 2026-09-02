@@ -7,6 +7,7 @@
     "mainInstruction": "TASK: Please read the image caption and rate the images below. You could read the Article or Article summary to get more context about the caption and the image",
     "stage": "Stage {{number}} of {{total}}",
     "imageCaption": "Image Caption",
+    "commentPlaceholder": "Add a comment (optional)",
     "listMainComplete": {
       "title": "\ud83c\udf89 Thank You!",
       "message": "You have successfully completed the mandatory part of the survey. Your contribution is greatly appreciated!",
